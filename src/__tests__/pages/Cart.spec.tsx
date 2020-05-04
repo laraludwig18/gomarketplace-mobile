@@ -1,22 +1,6 @@
-/* eslint-disable import/first */
-
 import React from 'react';
-
 import { mocked } from 'ts-jest/utils';
 import { render, fireEvent, act } from '@testing-library/react-native';
-
-jest.mock('../../hooks/cart.tsx', () => ({
-  __esModule: true,
-  useCart: jest.fn().mockReturnValue({
-    addToCart: jest.fn(),
-    products: [],
-  }),
-}));
-
-jest.mock('../../utils/formatValue.ts', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(value => value),
-}));
 
 import Cart from '../../pages/Cart';
 import { useCart } from '../../hooks/cart';
@@ -60,18 +44,6 @@ describe('Dashboard', () => {
     expect(getByText('600')).toBeTruthy();
     expect(getByText('6000')).toBeTruthy();
     expect(getByText('10x')).toBeTruthy();
-  });
-
-  it('should be able to calculate the cart total', async () => {
-    const { getByText } = render(<Cart />);
-
-    expect(getByText('8000')).toBeTruthy();
-  });
-
-  it('should be able to calculate the cart total', async () => {
-    const { getByText } = render(<Cart />);
-
-    expect(getByText('15 itens')).toBeTruthy();
   });
 
   it('should be able to increment product quantity on the cart', async () => {

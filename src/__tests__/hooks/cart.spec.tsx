@@ -1,9 +1,6 @@
-/* eslint-disable import/first */
-
 import React from 'react';
-import { mocked } from 'ts-jest/utils';
 import { View, Text, TouchableOpacity } from 'react-native';
-
+import { mocked } from 'ts-jest/utils';
 import {
   render,
   fireEvent,
@@ -12,20 +9,12 @@ import {
   cleanup,
 } from '@testing-library/react-native';
 
-jest.useFakeTimers();
-
-jest.mock('@react-native-community/async-storage', () => ({
-  __esModule: true,
-  default: {
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
-    getItem: jest.fn().mockReturnValue(null),
-    clear: jest.fn(),
-  },
-}));
-
 import AsyncStorage from '@react-native-community/async-storage';
 import { CartProvider, useCart } from '../../hooks/cart';
+
+jest.unmock('../../hooks/cart.tsx');
+
+jest.useFakeTimers();
 
 const TestComponent: React.FC = () => {
   const { products, addToCart, increment, decrement } = useCart();

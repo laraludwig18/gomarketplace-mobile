@@ -1,5 +1,26 @@
 import React from 'react';
 
+jest.mock('@react-navigation/native', () => {
+  // Require the original module to not be mocked...
+  const originalModule = jest.requireActual('@react-navigation/native');
+
+  return {
+    __esModule: true, // Use it when dealing with esModules
+    ...originalModule,
+    useNavigation: jest.fn(),
+  };
+});
+
+jest.mock('@react-native-community/async-storage', () => ({
+  __esModule: true,
+  default: {
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    getItem: jest.fn().mockReturnValue(null),
+    clear: jest.fn(),
+  },
+}));
+
 jest.mock(
   'react-native/Libraries/Components/Touchable/TouchableOpacity.js',
   () => {
@@ -49,3 +70,16 @@ jest.mock('react-native-gesture-handler', () => {
     Directions: {},
   };
 });
+
+jest.mock('./src/hooks/cart.tsx', () => ({
+  __esModule: true,
+  useCart: jest.fn().mockReturnValue({
+    addToCart: jest.fn(),
+    products: [],
+  }),
+}));
+
+jest.mock('./src/utils/formatValue.ts', () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(value => value),
+}));

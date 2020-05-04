@@ -1,35 +1,23 @@
-/* eslint-disable import/first */
-
 import React from 'react';
-
+import { useNavigation } from '@react-navigation/native';
 import { mocked } from 'ts-jest/utils';
 import { render, fireEvent, act, wait } from '@testing-library/react-native';
 import AxiosMock from 'axios-mock-adapter';
+
 import api from '../../services/api';
-
-jest.mock('@react-navigation/native', () => {
-  // Require the original module to not be mocked...
-  const originalModule = jest.requireActual('@react-navigation/native');
-
-  return {
-    __esModule: true, // Use it when dealing with esModules
-    ...originalModule,
-    useNavigation: jest.fn(),
-  };
-});
-
-jest.mock('../../hooks/cart.tsx', () => ({
-  __esModule: true,
-  useCart: jest.fn().mockReturnValue({
-    addToCart: jest.fn(),
-    products: [],
-  }),
-}));
 
 import Dashboard from '../../pages/Dashboard';
 import { useCart } from '../../hooks/cart';
 
 const apiMock = new AxiosMock(api);
+
+const useNavigationMocked = mocked(useNavigation);
+
+const navigate = jest.fn();
+
+useNavigationMocked.mockReturnValue({
+  navigate,
+} as any);
 
 describe('Dashboard', () => {
   it('should be able to list products', async () => {

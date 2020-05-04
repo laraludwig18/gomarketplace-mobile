@@ -1,33 +1,7 @@
-/* eslint-disable import/first */
-
 import React from 'react';
-
+import { useNavigation } from '@react-navigation/native';
 import { mocked } from 'ts-jest/utils';
 import { render, fireEvent, act } from '@testing-library/react-native';
-import { useNavigation } from '@react-navigation/native';
-
-jest.mock('@react-navigation/native', () => {
-  const originalModule = jest.requireActual('@react-navigation/native');
-
-  return {
-    __esModule: true,
-    ...originalModule,
-    useNavigation: jest.fn(),
-  };
-});
-
-jest.mock('../../hooks/cart.tsx', () => ({
-  __esModule: true,
-  useCart: jest.fn().mockReturnValue({
-    addToCart: jest.fn(),
-    products: [],
-  }),
-}));
-
-jest.mock('../../utils/formatValue.ts', () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(value => value),
-}));
 
 import FloatingCart from '../../components/FloatingCart';
 import { useCart } from '../../hooks/cart';
